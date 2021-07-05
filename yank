@@ -1,0 +1,14 @@
+#!/usr/bin/env raku
+
+use Cro::Uri :decode-percents;
+
+use lib $?FILE.IO.parent.add: 'lib';
+use Clipboard;
+
+#| Copy page title and url
+multi MAIN ('title-url') {
+    if %*ENV<QUTE_TITLE> and %*ENV<QUTE_URL> {
+        copy_to_clipboard %*ENV<QUTE_TITLE> ~ "\n" ~ decode-percents %*ENV<QUTE_URL>;
+    }
+}
+

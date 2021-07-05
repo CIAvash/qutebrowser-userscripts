@@ -1,0 +1,42 @@
+#!/usr/bin/env raku
+
+use lib $?FILE.IO.parent.add: 'lib';
+use QBUtils;
+
+my %*SUB-MAIN-OPTS = :named-anywhere;
+
+#| Find urls of elements in the page and copy the URLs selected with rofi
+multi MAIN (Str $element_type, Bool :$with-title) {
+    find :element_type($element_type), :$with-title, :html(%*ENV<QUTE_HTML>.IO.slurp), :page_url(%*ENV<QUTE_URL>);
+}
+
+#| Operate on the URL with the selected operatopn
+multi MAIN {
+    use Rofi;
+    use HTMLUtils;
+    my $url = ~%*ENV<QUTE_COMMANDLINE_TEXT>.match: /'http's? '://' .*/;
+    $url.=&make_url;
+    $url.=Str;
+
+    my Str @rofi_options = Array[Str].new: '-mesg', '<b>Enter</b>: URL <b>Alt+1</b>: Title and Url';
+    my %result = rofi 'Select element type', Array[Str](ElementTypes.keys.sort), @rofi_options;
+
+    use Cro::HTTP::Client;
+
+    my $html = (Cro::HTTP::Client.get($url) ==> await() ==> (*.body)() ==> await());
+
+    CATCH {
+        when X::Cro::HTTP::Error {
+            say "Problem fetching " ~ .request.target;
+        }
+    }
+
+    given %result<exitcode> {
+         when 0 {
+              find :element_type(%result<selected>), :$html, :page_url($url);
+         }
+         when 10 {
+              find :element_type(%result<selected>), :with-title, :$html, :page_url($url);
+         }
+    }
+}

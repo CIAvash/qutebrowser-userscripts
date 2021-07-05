@@ -1,0 +1,12 @@
+#!/usr/bin/env raku
+
+use lib $?FILE.IO.parent.add: 'lib';
+use QBUtils;
+
+multi MAIN (Bool :$domain) {
+    dig %*ENV<QUTE_URL>, :$domain;
+}
+
+multi MAIN ($url, Bool :$domain) {
+    dig $url, :$domain;
+}

@@ -1,0 +1,6 @@
+#!/usr/bin/env raku
+
+use lib $?FILE.IO.parent.add: 'lib';
+use QBUtils;
+
+find :element_type<Links>, :html(%*ENV<QUTE_SELECTED_HTML>), :page_url(%*ENV<QUTE_CURRENT_URL>);

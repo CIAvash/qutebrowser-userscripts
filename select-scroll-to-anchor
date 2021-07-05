@@ -1,0 +1,13 @@
+#!/usr/bin/env raku
+
+use DOM::Tiny;
+
+use lib $?FILE.IO.parent.add: 'lib';
+use Rofi;
+
+my $dom = DOM::Tiny.parse(%*ENV<QUTE_HTML>.IO.slurp);
+my Str @anchors = Array[Str].new: |.find('body [id]').map(*<id>) with $dom;
+
+with rofi 'Select anchor', @anchors {
+    %*ENV<QUTE_FIFO>.IO.spurt: 'scroll-to-anchor ' ~ .<selected> if .<exitcode> == 0;
+}

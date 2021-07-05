@@ -1,0 +1,9 @@
+#!/usr/bin/env raku
+
+use Cro::Uri :decode-percents;
+
+use Clipboard;
+
+if %*ENV<QUTE_SELECTED_TEXT> and %*ENV<QUTE_URL> {
+    copy_to_clipboard %*ENV<QUTE_SELECTED_TEXT>.trim ~ "\n" ~ decode-percents %*ENV<QUTE_URL>;
+}

@@ -1,0 +1,6 @@
+#!/usr/bin/env raku
+
+with run <zenity --file-selection --multiple --title Open>, :out {
+    my @files = .out.lines: :close;
+    %*ENV<QUTE_FIFO>.IO.spurt: @files.map({"open -t -- $_"}).join("\n");
+}

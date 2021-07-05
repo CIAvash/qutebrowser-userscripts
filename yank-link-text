@@ -1,0 +1,6 @@
+#!/usr/bin/env raku
+
+use lib $?FILE.IO.parent.add: 'lib';
+use Clipboard;
+
+copy_to_clipboard $_ with %*ENV<QUTE_SELECTED_TEXT>.trim;
