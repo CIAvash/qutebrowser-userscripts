@@ -2,6 +2,7 @@
 
 use Cro::Uri :decode-percents;
 
+use lib $?FILE.IO.parent.add: 'lib';
 use Clipboard;
 
 if %*ENV<QUTE_SELECTED_TEXT> and %*ENV<QUTE_URL> {
