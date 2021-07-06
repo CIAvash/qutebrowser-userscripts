@@ -10,7 +10,7 @@ multi MAIN (Str $element_type, Bool :$with-title) {
     find :element_type($element_type), :$with-title, :html(%*ENV<QUTE_HTML>.IO.slurp), :page_url(%*ENV<QUTE_URL>);
 }
 
-#| Operate on the URL with the selected operatopn
+#| Operate on the URL with the selected operation
 multi MAIN {
     use Rofi;
     use HTMLUtils;
