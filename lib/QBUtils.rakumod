@@ -14,7 +14,10 @@ sub find (ElementTypes() :$element_type!, Bool :$with-title, Str:D :$html!, Str:
     select @urls, |(:height<2> if $with-title);
 }
 
-sub dig (Str:D $url, Str:D $page_url = '', Bool :$domain) is export {
+sub dig (Str:D $url is copy, Str:D $page_url is copy = '', Bool :$domain) is export {
+    $url.=&make_string_url;
+    $page_url.=&make_string_url if $page_url;
+
     if $domain {
         select dig_domain $url, $page_url;
     } else {

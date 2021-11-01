@@ -23,7 +23,7 @@ multi MAIN {
 
     use Cro::HTTP::Client;
 
-    my $html = (Cro::HTTP::Client.get($url) ==> await() ==> (*.body)() ==> await());
+    my $html = Cro::HTTP::Client.get($url).&await.body.&await;
 
     CATCH {
         when X::Cro::HTTP::Error {

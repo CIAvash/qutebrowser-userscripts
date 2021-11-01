@@ -1,8 +1,7 @@
 #!/usr/bin/env raku
 
-use Cro::Uri :decode-percents;
-
 use lib $?FILE.IO.parent.add: 'lib';
 use Clipboard;
+use HTMLUtils;
 
-.&copy_to_clipboard with decode-percents %*ENV<QUTE_URL>;
+.&copy_to_clipboard with make_string_url %*ENV<QUTE_URL>;

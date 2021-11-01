@@ -26,14 +26,14 @@ sub dig_domain (Str:D $path, Str:D $page_url = '' --> Array[Str:D]) is export {
 }
 
 #| Creates a URI string
-sub make_string_url (Str:D $path, Str $page_url? --> Str:D) is export {
+sub make_string_url (Str:D $path, Str $page_url? --> Str) is export {
     if $path ~~ /^^ \w+ ':'/ and $path !~~ /^^ \w+ '://'/ {
         return $path;
     }
 
-    with make_url $path, $page_url {
-        my Str:D $url = '';
+    my Str $url;
 
+    with make_url $path, $page_url {
         $url ~= "$_:" with .scheme;
         $url ~= "//$_" with .authority;
         $url ~= '/' ~ .hyper.map(&decode-percents).join('/') with .path-segments.grep(&so);
@@ -52,18 +52,14 @@ sub make_string_url (Str:D $path, Str $page_url? --> Str:D) is export {
         }
 
         $url ~= "#$_.&decode-percents()" with .fragment;
-
-        $url;
     }
+
+    $url;
 }
 
 #| Creates a URI object
 sub make_url (Str:D $path is copy, Str $base_url? is copy --> Cro::Uri::HTTP:D) is export {
     my Cro::Uri::HTTP $uri .= new;
-
-    $path.=subst(/<:!Script<Latin> - [:/?&#=]>+/, *.Str.&encode-percents, :g).Str;
-
-    $path ~~ s:nth(2..*)/'#'/%23/;
 
     if $path ~~ /^^ \w+ ':'/ || not defined $base_url {
         return $uri.add: $path;
@@ -76,8 +72,7 @@ sub make_url (Str:D $path is copy, Str $base_url? is copy --> Cro::Uri::HTTP:D) 
 
     CATCH {
         when X::Cro::Uri::ParseError {
-            note .^name ~ ': ' ~ .message;
-            .resume;
+            note .^name ~ ': ' ~ .message and return Nil;
         }
     }
 }
@@ -147,6 +142,8 @@ sub find_urls (ElementTypes:D :$element_type!, Bool :$with-title, Str:D :$html!,
 
     Array[Str:D].new: @elements.unique(:as(*<url>)).hyper.map: {
         my Str $url = .<url>.&make_string_url($page_url);
+
+        next unless $url;
 
         if $with-title {
             join "\n", (.<title> // '').trim.subst(/\s+/, ' ', :g), $url;

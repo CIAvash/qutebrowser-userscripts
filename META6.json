@@ -1,0 +1,19 @@
+{
+    "perl": "6.d",
+    "name": "Qutebrowser::Userscripts",
+    "description": "A collection of userscripts to use in qutebrowser.",
+    "authors": ["Siavash Askari Nasr"],
+    "auth": "zef:CIAvash",
+    "version": "0.1.1",
+    "tags": ["Qutebrowser", "Userscripts", "CLI", "Command Line", "Utils"],
+    "license": "LGPL-3.0-or-later",
+    "source-url": "https://github.com/CIAvash/qutebrowser-userscripts.git",
+    "provides": {
+        "HTMLUtils": "lib/HTMLUtils.rakumod",
+        "QBUtils": "lib/QBUtils.rakumod"
+    },
+    "depends": [
+        "Cro::HTTP:ver<0.8.6>",
+        "DOM::Tiny"
+    ]
+}

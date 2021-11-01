@@ -30,7 +30,7 @@ A collection of [userscripts](https://www.qutebrowser.org/doc/userscripts.html) 
 #### Modules
 
 ```console
-zef install --/test Cro::HTTP DOM::Tiny
+zef install --deps-only --/test .
 ```
 
 ## Features
