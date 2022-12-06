@@ -117,7 +117,7 @@ sub find_urls (ElementTypes:D :$element_type!, Bool :$with-title, Str:D :$html!,
             ).grep(*<url>) with $dom;
         }
         when Feeds {
-            |.find('head link[type="application/rss+xml"], head link[type=application/atom+xml"]').hyper.map(
+            |.find('head link[type="application/rss+xml"], head link[type="application/atom+xml"]').hyper.map(
                 {
                     %(
                         title => .<title> // .<type>,
