@@ -4,10 +4,10 @@
     "description": "A collection of userscripts to use in qutebrowser.",
     "authors": ["Siavash Askari Nasr"],
     "auth": "zef:CIAvash",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "tags": ["Qutebrowser", "Userscripts", "CLI", "Command Line", "Utils"],
     "license": "LGPL-3.0-or-later",
-    "source-url": "https://github.com/CIAvash/qutebrowser-userscripts.git",
+    "source-url": "https://codeberg.org/CIAvash/qutebrowser-userscripts.git",
     "provides": {
         "HTMLUtils": "lib/HTMLUtils.rakumod",
         "QBUtils": "lib/QBUtils.rakumod"
